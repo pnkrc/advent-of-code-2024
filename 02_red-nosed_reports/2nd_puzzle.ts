@@ -4,11 +4,6 @@ const reports = lines.map((line) =>
   line.split(" ").map((level) => parseInt(level))
 );
 
-function hasDuplicates(report: Array<number>) {
-  const set = new Set(report);
-  return set.size < report.length;
-}
-
 function areEqual(a: Array<number>, b: Array<number>) {
   for (const index in a) {
     if (a[index] !== b[index]) {
@@ -20,17 +15,18 @@ function areEqual(a: Array<number>, b: Array<number>) {
 
 function isAllIncreasing(report: Array<number>) {
   const sorted = report.toSorted((a, b) => a - b);
-  return !hasDuplicates(report) && areEqual(report, sorted);
+  return areEqual(report, sorted);
 }
 
 function isAllDecreasing(report: Array<number>) {
   const sorted = report.toSorted((a, b) => b - a);
-  return !hasDuplicates(report) && areEqual(report, sorted);
+  return areEqual(report, sorted);
 }
 
 function passesAdjacencyCheck(report: Array<number>) {
   for (let index = 0; index < report.length - 1; index++) {
-    if (Math.abs(report[index] - report[index + 1]) > 3) {
+    const distance = Math.abs(report[index] - report[index + 1]);
+    if (distance === 0 || distance > 3) {
       return false;
     }
   }
